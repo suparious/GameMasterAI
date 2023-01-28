@@ -1,4 +1,4 @@
-version = "0.3.11"
+version = "1.3.11"
 debug = False
 screen_size = "1080p" # 1080p/1440p
 # Set keybind for Auto-Run
