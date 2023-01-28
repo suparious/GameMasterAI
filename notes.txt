@@ -1,0 +1,6 @@
+https://github.com/thegouger/PUBG_CV_Healthbar/blob/master/pubg_health_server.py
+https://www.youtube.com/watch?v=pUEZbUAMZYA
+
+https://towardsdatascience.com/loading-custom-image-dataset-for-deep-learning-models-part-1-d64fa7aaeca6
+https://towardsdatascience.com/input-pipeline-for-images-using-keras-and-tensorflow-c5e107b6d7b9
+

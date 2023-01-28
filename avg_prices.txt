@@ -1,0 +1,9 @@
+0.07 green wood
+0.09 aged wood
+0.03 stone
+0.23 iron ore
+0.20 rawhide
+0.25 thick hide
+0.62 wyrdwood
+0.15 fiber
+0.35 silk
