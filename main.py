@@ -53,6 +53,7 @@ class RunEnv():
   combatKey3delay2 = config.combatKey3delay2
   hotbarKey1 = config.hotbarKey1
   takePots = config.takePots
+  emote_list = config.emote_list
   sctGrab = ""
   stopped = True
   currentFoward = 0
@@ -118,14 +119,17 @@ def capture(env):
   # begin capture loop
   while env.bagWeight < 90:
     env.currentFoward += (time.time() - env.startTime)
-    #screenshot(env, env.full_screen)
     checkHealth(env)
-    #checkCombat()
+      #screenshot()
+      #checkCombat()
+        #combatActivate()
+          #combatFocus()
+          #takePots()
     #checkInventory()
     #unstuck()
     rotate(env)
-    #screenshot(env, env.full_screen)
     #checkForResource()
+      #screenshot()
     autoRun(env)
     time.sleep(0.4)
 

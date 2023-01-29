@@ -44,8 +44,7 @@ def rotate(env):
     env.fucked += 1
     print("Rotating:", env.fucked, "Distance:", round(env.currentFoward))
     if env.debug:
-      print("Screenshotting the shit show")
-      #save_shot("fucked", env.full_screen)
+      screenshot(env, env.full_screen, "fucked_up")
     if not env.stopped:
       pydirectinput.press('space')
       time.sleep(.2)
@@ -56,7 +55,7 @@ def rotate(env):
     # sync-up the auto-run state by using a combat skill
     #print("Pressing light attack key")
     #pydirectinput.click()
-    #random_emote()
+    random_emote(env)
     # Rotate the camera
     for i in range(0, env.flipMouseMove, round(env.flipMouseMove/5)):
       # Moving the mouse a 5th of the total move amount
@@ -163,3 +162,20 @@ def combatFocus(env):
     print("Focusing target, x:", focus_x, "y:", focus_y)
     pyautogui.moveTo(focus_x, focus_y)
     pyautogui.click(focus_x, focus_y)
+
+def random_emote(env):
+  import random
+  import time
+  import pydirectinput
+  pydirectinput.FAILSAFE = env.failsafe
+
+  emote = random.choice(env.emote_list)
+  print("Emoting:", emote)
+  time.sleep(1)
+  pydirectinput.press(env.reverseMoveKey)
+  time.sleep(0.1)
+  pydirectinput.press('return')
+  time.sleep(0.1)
+  pydirectinput.write('./'+emote)
+  time.sleep(0.1)
+  pydirectinput.press('return')
