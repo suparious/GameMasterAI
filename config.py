@@ -49,3 +49,4 @@ crouch = 'c'
 emote_list = ["thumbs", "rockpaperscissors", "dice", "cheer", "flex"]
 images_folder = "imgs"
 runtime_images_folder = "debug"
+failsafe = False

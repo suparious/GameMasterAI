@@ -16,6 +16,7 @@ import random
 import config
 # bring in custom functions
 from functions import screenshot
+from functions import autoRun
 
 # quality of life settings for developers
 pyautogui.FAILSAFE = False
@@ -23,7 +24,13 @@ pydirectinput.FAILSAFE = False
 
 @dataclass
 class RunEnv():
+  sct = mss.mss()
+  gameWindows = pyautogui.getWindowsWithTitle(config.gameTitle)
+  bagCheckDelay = config.bagCheckDelayMax
   debug = config.debug
+  forwardMoveKey = config.forwardMoveKey
+  autorunKey = config.autorunKey
+  failsafe = config.failsafe
   stopped = True
   currentFoward = 0
   startTime = ""
@@ -34,14 +41,12 @@ class RunEnv():
   full_screen = ""
   area_title = ""
   inventory_bar = ""
-  sct = ""
   found = False
   fucked = 0
   bagWeight = 0
-  bagCheckDelay = config.bagCheckDelayMax
   shotType = "debug"
   combat = False
-  gameWindows = pyautogui.getWindowsWithTitle(config.gameTitle)
+ 
   
 def capture_setup(env):
   print("RibRub Bot v", config.version)
@@ -90,8 +95,9 @@ def capture_setup(env):
 # Define the capture loop
 def capture(env):
   # begin capture loop
-  while True:
+  while env.bagWeight < 90:
     screenshot(env, env.full_screen)
+    autoRun(env)
     time.sleep(0.4)
 
 # Define main loop
