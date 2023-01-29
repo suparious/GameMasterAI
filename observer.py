@@ -1,16 +1,21 @@
 import pyautogui
 import pydirectinput
 import time
-import random
 import mss
-import numpy as np
-from PIL import Image
 import gc
-import cv2
 import threading
 from dataclasses import dataclass
 from random import randint
+
+import cv2
+import numpy as np
+from PIL import Image
+import random
+
+# bring in customized variables
 import config
+# bring in custom functions
+from functions import screenshot
 
 # quality of life settings for developers
 pyautogui.FAILSAFE = False
@@ -22,6 +27,7 @@ class RunEnv():
   currentFoward = 0
   startTime = ""
   sctImg = ""
+  sctPNG = ""
   stuckTracker = 0
   mssRegion = ""
   full_screen = ""
@@ -72,6 +78,10 @@ def capture_setup(env):
   time.sleep(.1)
   pyautogui.click()
   time.sleep(.1)
+  # Select weapon
+  print("Select primary weapon")
+  pyautogui.press(config.weaponSelect1)
+  time.sleep(config.weaponSelectDelay)
 
   # define screenshot mechanism
   env.sct = mss.mss()
@@ -80,37 +90,22 @@ def capture_setup(env):
 def capture(env):
   # begin capture loop
   while True:
-    capture_screen(env, env.full_screen)
+    screenshot(env, env.full_screen)
     time.sleep(0.4)
 
 # Define main loop
 def main(env):
-  env.startTime = time.time()
-
-  # Select weapon
-  print("Select primary weapon")
-  pyautogui.press(config.weaponSelect1)
-  time.sleep(config.weaponSelectDelay)
+  env.startTime = time.time()  
 
   ### Main loop
+  print("Starting main loop")
   time.sleep(10)
 
   # Clean garbage
   gc.collect()
   print("End of main loop")
 
-### Define functions
-def capture_screen(env, region):
-  global sctImg
-  global sctPNG
-  print("capturing screen:", region)
-  sctImg = env.sct.grab(region)
-  sctPNG = mss.tools.to_png(sctImg.rgb, sctImg.size)
-  # save to file if debugging is enabled
-  if config.debug:
-    filename = config.runtime_images_folder+"/capture_screen.png".format(region)
-    print("Saving to ", filename)
-    mss.tools.to_png(sctImg.rgb, sctImg.size, output=filename)
+
 
 # Configure threading
 runenv = RunEnv()
