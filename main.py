@@ -13,6 +13,8 @@ from functions import autoRun
 from functions import rotate
 from functions import checkHealth
 from functions import checkInventory
+from functions import unstuck
+from functions import checkForResource
 
 # quality of life settings for developers
 pyautogui.FAILSAFE = config.failsafe
@@ -26,6 +28,7 @@ class RunEnv():
   forwardMoveKey = config.forwardMoveKey
   reverseMoveKey = config.reverseMoveKey
   autorunKey = config.autorunKey
+  actionKey = config.actionKey
   failsafe = config.failsafe
   fowardMoveTotal = config.fowardMoveTotal
   flipMouseMove = config.flipMouseMove
@@ -47,6 +50,8 @@ class RunEnv():
   hotbarKey1 = config.hotbarKey1
   takePots = config.takePots
   emote_list = config.emote_list
+  fuckedMax = config.fuckedMax
+  maxStuck = config.maxStuck
   sct = mss.mss()
   startTime = time.time()
   bagCheckDelay = 0
@@ -119,9 +124,9 @@ def capture(env):
           #combatFocus()
           #takePots()
     checkInventory(env)
-    #unstuck()
+    unstuck(env)
     rotate(env)
-    #checkForResource()
+    checkForResource()
       #screenshot()
     autoRun(env)
     time.sleep(0.4)

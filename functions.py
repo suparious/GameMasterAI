@@ -5,7 +5,7 @@ def screenshot(env, region, name, file):
   import numpy as np
 
   print("capturing screen:", region)
-  env.sctImg = Image.fromarray(np.array(sct.grab(region)))
+  env.sctImg = Image.fromarray(np.array(env.sct.grab(region)))
   env.sctGrab = env.sct.grab(region)
   env.sctPNG = mss.tools.to_png(env.sctGrab.rgb, env.sctGrab.size)
   #env.sctImg = Image.fromarray(np.array(sct.grab(env.mssRegion)))
@@ -226,11 +226,79 @@ def closeMenu(env):
     pydirectinput.press('esc')
 
 def unstuck(env):
-  while env.fucked >= config.fuckedMax:
+  import time
+  import pydirectinput
+  pydirectinput.FAILSAFE = env.failsafe
+
+  while env.fucked >= env.fuckedMax:
     print("We are fucked")
     pydirectinput.press('return')
     pydirectinput.write('/unstuck')
     pydirectinput.press('return')
-    fucked = 0
-    startTime = time.time()
+    env.fucked = 0
+    env.startTime = time.time()
+    env.currentFoward = 0
+
+def checkForResource(env):
+  import time
+  import pyautogui
+  import pydirectinput
+  pyautogui.FAILSAFE = env.failsafe
+  pydirectinput.FAILSAFE = env.failsafe
+  from functions import screenshot
+
+  screenshot(env, env.mssRegion, "checkForResource", False)
+  # Find the image on screen, in that region
+  if pyautogui.locate("imgs/e1.png", env.sctImg, grayscale=True, confidence=.7) is not None:
+    # If not stopped, stop
+    if not env.stopped:
+      pydirectinput.press(env.autorunKey)
+    print("Stopping. Distance:", round(env.currentFoward), "m, Weight:", env.bagWeight,"%")
+    pydirectinput.keyDown(env.reverseMoveKey)
+    time.sleep(.1)
+    pydirectinput.keyUp(env.reverseMoveKey)
+    env.stopped = True
+    env.found = True
+    env.fucked = 0
+    env.startTime = time.time()
+    env.currentFoward = 0
+  else:
+    env.found = False
+
+  while env.found:
+    
+    # Interact with detected object
+    pyautogui.press(env.actionKey)
+    time.sleep(0.1)
+    print("Pressing Action Key")
+    checkHealth(env)
+    # Get a new Screenshot
+    screenshot(env, env.mssRegion, "checkForResource", False)
+    # Check the status of the interaction
+    if pyautogui.locate("imgs/two1.png", env.sctImg, grayscale=True, confidence=.8) is None:
+      print("Waiting for object")
+      waiting = True
+      while waiting:       
+        time.sleep(0.5)
+        screenshot(env, env.mssRegion, "checkForResource", False)
+        if pyautogui.locate("imgs/two1.png", env.sctImg, grayscale=True, confidence=.8) is None:
+          waiting = True
+        else:
+          waiting = False
+        # If stuckTracker hits the maxStuck limit, move the mouse
+        if env.stuckTracker == env.maxStuck:
+          pydirectinput.move(5, 0, relative=True)
+          env.stuckTracker = 0
+        env.stuckTracker += 1
+      # Check for additional resources
+      screenshot(env, env.mssRegion, "checkForResource", False)
+      if pyautogui.locate("imgs/e1.png", env.sctImg, grayscale=True, confidence=.7) is not None:
+        print("Found another object")
+        env.found = True
+      else:
+        env.found = False
+    if pyautogui.locate("imgs/e1.png", env.sctImg, grayscale=True, confidence=.7) is None:
+      env.found = False
+      # If stuckTracker hits the maxStuck limit, move the mouse
+    env.startTime = time.time()
     env.currentFoward = 0
