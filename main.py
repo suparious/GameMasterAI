@@ -119,31 +119,9 @@ def capture(env):
   # begin capture loop
   while env.bagWeight < 90:
     env.currentFoward += (time.time() - env.startTime)
-    
-    checkInventory(env)
-      #screenshot()
-      #closeMenu()
-        #screenshot()
-    
-    unstuck(env)
-    
-    rotate(env)
-      #screenshot()
-      #random_emote()
-    
     checkForResource(env)
-      #screenshot()
-      #checkHealth()
-        #screenshot()
-        #combatActivate()
-          #combatFocus()
-          #checkHealth()
-          #checkForResource()
-    
     checkHealth(env)
-    
     autoRun(env)
-
     gc.collect()
 
 # Define main loop
