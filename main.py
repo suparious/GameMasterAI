@@ -18,6 +18,7 @@ import config
 from functions import screenshot
 from functions import autoRun
 from functions import rotate
+from functions import checkHealth
 
 # quality of life settings for developers
 pyautogui.FAILSAFE = False
@@ -30,11 +31,29 @@ class RunEnv():
   bagCheckDelay = config.bagCheckDelayMax
   debug = config.debug
   forwardMoveKey = config.forwardMoveKey
+  reverseMoveKey = config.reverseMoveKey
   autorunKey = config.autorunKey
   failsafe = config.failsafe
   fowardMoveTotal = config.fowardMoveTotal
   flipMouseMove = config.flipMouseMove
   flip = config.flip
+  runtime_images_folder = config.runtime_images_folder
+  images_folder = config.images_folder
+  weaponSelect1 = config.weaponSelect1
+  weaponSelect2 = config.weaponSelect2
+  weaponSelectDelay = config.weaponSelectDelay
+  combatKey1 = config.combatKey1
+  combatKey1delay1 = config.combatKey1delay1
+  combatKey1delay2 = config.combatKey1delay2
+  combatKey2 = config.combatKey2
+  combatKey2delay1 = config.combatKey2delay1
+  combatKey2delay2 = config.combatKey2delay2
+  combatKey3 = config.combatKey3
+  combatKey3delay1 = config.combatKey3delay1
+  combatKey3delay2 = config.combatKey3delay2
+  hotbarKey1 = config.hotbarKey1
+  takePots = config.takePots
+  sctGrab = ""
   stopped = True
   currentFoward = 0
   startTime = time.time()
@@ -99,9 +118,15 @@ def capture(env):
   # begin capture loop
   while env.bagWeight < 90:
     env.currentFoward += (time.time() - env.startTime)
-    screenshot(env, env.full_screen)
-    autoRun(env)
+    #screenshot(env, env.full_screen)
+    checkHealth(env)
+    #checkCombat()
+    #checkInventory()
+    #unstuck()
     rotate(env)
+    #screenshot(env, env.full_screen)
+    #checkForResource()
+    autoRun(env)
     time.sleep(0.4)
 
 # Define main loop

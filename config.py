@@ -1,5 +1,5 @@
 version = "1.4.0"
-debug = False
+debug = True
 screen_size = "1080p" # 1080p/1440p
 # Set keybind for Auto-Run
 autorunKey = '`'
