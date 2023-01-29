@@ -1,3 +1,5 @@
+import sys
+import getopt
 import pyautogui
 import pydirectinput
 import time
@@ -73,8 +75,15 @@ class RunEnv():
   shotType = "debug"
   combat = False
   
-def startup(env):
+def startup(env, argv):
   print("RibRub Bot v", config.version)
+  opts, argv = getopt.getopt(argv, "hm:",["mmode="])
+  for opt, arg in opts:
+    if opt == '-h':
+      print("main.py -m <operation_mode>")
+      sys.exit() 
+  #print ("Number of arguments", len(sys.argv), "arguments.")
+  #print ("Argument List:", str(sys.argv))
   # Iterate through available windows, until we find the gameTitle
   for window in env.gameWindows:
     if window.title == (config.gameTitle):
@@ -145,7 +154,7 @@ def finish(env):
 # Configure threading
 runenv = RunEnv()
 
-startupThread = threading.Thread(name='startup', target=startup(runenv))
+startupThread = threading.Thread(name='startup', target=startup(runenv, sys.argv[1:]))
 captureLoop = threading.Thread(name='capture', target=capture(runenv))
 finishThread = threading.Thread(name='finish', target=finish(runenv))
 
