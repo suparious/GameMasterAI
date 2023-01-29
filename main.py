@@ -126,7 +126,7 @@ def capture(env):
     checkInventory(env)
     unstuck(env)
     rotate(env)
-    checkForResource()
+    checkForResource(env)
       #screenshot()
     autoRun(env)
     time.sleep(0.4)
