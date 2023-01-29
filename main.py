@@ -1,32 +1,23 @@
 import pyautogui
 import pydirectinput
 import time
-import mss
 import gc
 import threading
 from dataclasses import dataclass
 from random import randint
-
-import cv2
-import numpy as np
-from PIL import Image
-import random
-
 # bring in customized variables
 import config
 # bring in custom functions
-from functions import screenshot
 from functions import autoRun
 from functions import rotate
 from functions import checkHealth
 
 # quality of life settings for developers
-pyautogui.FAILSAFE = False
-pydirectinput.FAILSAFE = False
+pyautogui.FAILSAFE = config.failsafe
+pydirectinput.FAILSAFE = config.failsafe
 
 @dataclass
 class RunEnv():
-  sct = mss.mss()
   gameWindows = pyautogui.getWindowsWithTitle(config.gameTitle)
   bagCheckDelay = config.bagCheckDelayMax
   debug = config.debug
