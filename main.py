@@ -75,6 +75,7 @@ class RunEnv():
   bagWeight = 0
   shotType = "debug"
   combat = False
+  gc_loops = 0
   
 def startup(env, argv):
   opts, argv = getopt.getopt(argv, "hm:",["mmode="])
