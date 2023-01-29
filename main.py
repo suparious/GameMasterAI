@@ -11,6 +11,7 @@ import config
 from functions import autoRun
 from functions import rotate
 from functions import checkHealth
+from functions import checkInventory
 
 # quality of life settings for developers
 pyautogui.FAILSAFE = config.failsafe
@@ -19,7 +20,7 @@ pydirectinput.FAILSAFE = config.failsafe
 @dataclass
 class RunEnv():
   gameWindows = pyautogui.getWindowsWithTitle(config.gameTitle)
-  bagCheckDelay = config.bagCheckDelayMax
+  bagCheckDelayMax = config.bagCheckDelayMax
   debug = config.debug
   forwardMoveKey = config.forwardMoveKey
   reverseMoveKey = config.reverseMoveKey
@@ -45,6 +46,7 @@ class RunEnv():
   hotbarKey1 = config.hotbarKey1
   takePots = config.takePots
   emote_list = config.emote_list
+  bagCheckDelay = 0
   sctGrab = ""
   stopped = True
   currentFoward = 0
@@ -61,8 +63,6 @@ class RunEnv():
   bagWeight = 0
   shotType = "debug"
   combat = False
-  
- 
   
 def capture_setup(env):
   print("RibRub Bot v", config.version)
@@ -116,7 +116,7 @@ def capture(env):
         #combatActivate()
           #combatFocus()
           #takePots()
-    #checkInventory()
+    checkInventory(env)
     #unstuck()
     rotate(env)
     #checkForResource()

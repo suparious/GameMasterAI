@@ -1,5 +1,5 @@
 ### Define functions
-def screenshot(env, region, name):
+def screenshot(env, region, name, file):
   import mss
   from PIL import Image
   import numpy as np
@@ -12,7 +12,7 @@ def screenshot(env, region, name):
   #env.sctImg = Image.fromarray(np.array(sct.grab(env.mssRegion)))
   
   # save to file if debugging is enabled
-  if env.debug:
+  if env.debug or file:
     filename = env.runtime_images_folder+"/shot-"+name+".png".format(region)
     print("Saving to ", filename)
     mss.tools.to_png(env.sctGrab.rgb, env.sctGrab.size, output=filename)
@@ -45,7 +45,7 @@ def rotate(env):
     env.fucked += 1
     print("Rotating:", env.fucked, "Distance:", round(env.currentFoward))
     if env.debug:
-      screenshot(env, env.full_screen, "fucked_up")
+      screenshot(env, env.full_screen, "fucked_up", True)
     if not env.stopped:
       pydirectinput.press('space')
       time.sleep(.2)
@@ -73,7 +73,7 @@ def checkHealth(env):
   pyautogui.FAILSAFE = env.failsafe
   from functions import screenshot
 
-  screenshot(env, env.mssRegion, "checkHealth")
+  screenshot(env, env.mssRegion, "checkHealth", False)
 
   # Find the image on screen, in that region
   if pyautogui.locate("imgs/health1.png", env.sctImg, grayscale=True, confidence=.65) is not None:
@@ -123,7 +123,7 @@ def combatActivate(env):
   env.found = True
 
   # Get a fresh screenshot
-  screenshot(env, env.mssRegion, "combatActivate")
+  screenshot(env, env.mssRegion, "combatActivate", False)
 
   if pyautogui.locate("imgs/health1.png", env.sctImg, grayscale=True, confidence=.65) is not None:
     print("Combat still detected...")
@@ -154,7 +154,7 @@ def combatFocus(env):
   import pyautogui
   pyautogui.FAILSAFE = env.failsafe
 
-  screenshot(env, env.full_screen, "combatFocus")
+  screenshot(env, env.full_screen, "combatFocus", False)
   aggro_bar = env.images_folder+"/combat1.png".format(env.full_screen)
   #focus_shot = config.runtime_images_folder+"/shot-focus.png".format(full_screen)
   focus_location = pyautogui.locate(aggro_bar, env.sctImg, grayscale=True, confidence=.65)
@@ -182,35 +182,35 @@ def random_emote(env):
   time.sleep(0.1)
   pydirectinput.press('return')
 
-
-
-def inventoryCheck(env):
+def checkInventory(env):
+  from PIL import Image
+  import numpy as np
   import cv2
   import pydirectinput
   pydirectinput.FAILSAFE = env.failsafe
   from functions import closeMenu
 
-  if bagCheckDelay >= env.bagCheckDelayMax:
+  if env.bagCheckDelay >= env.bagCheckDelayMax:
     pydirectinput.press('tab')
-    screenshot(env, env.inventory_bar, "inventory")
+    screenshot(env, env.inventory_bar, "inventory", True)
     closeMenu(env)
     # Check Inventory percentage
-    inventory_bar_raw = cv2.imread(config.runtime_images_folder+"/shot-inventory.png", 1)
+    inventory_bar_raw = cv2.imread(env.runtime_images_folder+"/shot-inventory.png", 1)
     alpha = 2.25 # Contrast control (1.0-3.0)
     beta = 0 # Brightness control (0-100)
     enhancement = cv2.convertScaleAbs(inventory_bar_raw, alpha=alpha, beta=beta)
-    cv2.imwrite(config.runtime_images_folder+"/shot-inventory_enhanced.png", enhancement)
-    inventory_bar_enhanced = Image.open(config.runtime_images_folder+"/shot-inventory_enhanced.png")
+    cv2.imwrite(env.runtime_images_folder+"/shot-inventory_enhanced.png", enhancement)
+    inventory_bar_enhanced = Image.open(env.runtime_images_folder+"/shot-inventory_enhanced.png")
     inventory_bar_bw = inventory_bar_enhanced.convert('1', dither=Image.NONE)
-    inventory_bar_bw.save(config.runtime_images_folder+"/shot-inventory_bw.png")
-    count_pixels = cv2.imread(config.runtime_images_folder+"/shot-inventory_bw.png")
+    inventory_bar_bw.save(env.runtime_images_folder+"/shot-inventory_bw.png")
+    count_pixels = cv2.imread(env.runtime_images_folder+"/shot-inventory_bw.png")
     n_white_pix = np.sum(count_pixels == 255)
     n_black_pix = np.sum(count_pixels == 0)
     total_pix = n_white_pix + n_black_pix
     bagWeight = round(n_white_pix / total_pix * 100)
-    print('Inventory load:', bagWeight, '%')
-    bagCheckDelay = 0
-  bagCheckDelay += 1
+    print('Inventory load:', env.bagWeight, '%')
+    env.bagCheckDelay = 0
+  env.bagCheckDelay += 1
 
 def closeMenu(env):
   import pyautogui
@@ -218,10 +218,20 @@ def closeMenu(env):
   pyautogui.FAILSAFE = env.failsafe
   pydirectinput.FAILSAFE = env.failsafe
   
-  screenshot(env, env.mssRegion, "closeMenu")
+  screenshot(env, env.mssRegion, "closeMenu", False)
   if pyautogui.locate("imgs/modes0.png", env.sctImg, grayscale=True, confidence=.8) is not None:
     print("closing menu")
     pydirectinput.press('esc')
   if pyautogui.locate("imgs/inventory0.png", env.sctImg, grayscale=True, confidence=.8) is not None:
     print("closing menu")
     pydirectinput.press('esc')
+
+def unstuck(env):
+  while env.fucked >= config.fuckedMax:
+    print("We are fucked")
+    pydirectinput.press('return')
+    pydirectinput.write('/unstuck')
+    pydirectinput.press('return')
+    fucked = 0
+    startTime = time.time()
+    env.currentFoward = 0
