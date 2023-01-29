@@ -145,6 +145,9 @@ def capture(env):
     checkForResource(env)
     if env.run_mode == "roomba":
       checkHealth(env)
+      checkInventory(env)
+      unstuck(env)
+      rotate(env)
       autoRun(env)
     if env.gc_loops >= config.gc_max_loops:
       env.gc_loops = 0

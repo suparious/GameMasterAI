@@ -21,13 +21,7 @@ def autoRun(env):
   import time
   import pydirectinput
   pydirectinput.FAILSAFE = env.failsafe
-  from functions import unstuck
-  from functions import rotate
-  from functions import checkInventory
 
-  checkInventory(env)
-  unstuck(env)
-  rotate(env)
   # Check autorun state
   if env.stopped:
     print("Auto-run activating")
