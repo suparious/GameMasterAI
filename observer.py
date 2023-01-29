@@ -23,6 +23,7 @@ pydirectinput.FAILSAFE = False
 
 @dataclass
 class RunEnv():
+  debug = config.debug
   stopped = True
   currentFoward = 0
   startTime = ""
