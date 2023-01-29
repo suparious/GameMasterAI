@@ -61,7 +61,7 @@ def rotate(env):
     # sync-up the auto-run state by using a combat skill
     #print("Pressing light attack key")
     #pydirectinput.click()
-    random_emote(env)
+    #random_emote(env)
     # Rotate the camera
     for i in range(0, env.flipMouseMove, round(env.flipMouseMove/5)):
       # Moving the mouse a 5th of the total move amount

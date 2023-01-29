@@ -4,3 +4,13 @@ https://www.youtube.com/watch?v=pUEZbUAMZYA
 https://towardsdatascience.com/loading-custom-image-dataset-for-deep-learning-models-part-1-d64fa7aaeca6
 https://towardsdatascience.com/input-pipeline-for-images-using-keras-and-tensorflow-c5e107b6d7b9
 
+https://docs.python.org/3/library/multiprocessing.html
+https://docs.python.org/3/library/multiprocessing.html#module-multiprocessing
+https://docs.python.org/3/library/asyncio.html#module-asyncio
+https://docs.python.org/3/library/queue.html#module-queue
+https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ProcessPoolExecutor
+
+https://stackoverflow.com/questions/71739593/python-how-to-store-settings-in-memory
+https://stackoverflow.com/questions/38254172/infinite-while-true-loop-in-the-background-python
+
+https://python-mss.readthedocs.io/examples.html
