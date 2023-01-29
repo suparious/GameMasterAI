@@ -101,6 +101,7 @@ def combatActivate(env):
   pydirectinput.FAILSAFE = env.failsafe
   from functions import screenshot
   from functions import combatFocus
+  from functions import checkForResource
 
   # If not in a stopped state, set as stopped
   if not env.stopped:
@@ -149,6 +150,7 @@ def combatActivate(env):
   env.startTime = time.time()
   env.currentFoward = 0
   checkHealth(env)
+  checkForResource(env)
 
 def combatFocus(env):
   import pyautogui

@@ -138,6 +138,7 @@ def capture(env):
         #combatActivate()
           #combatFocus()
           #checkHealth()
+          #checkForResource()
     
     checkHealth(env)
     
