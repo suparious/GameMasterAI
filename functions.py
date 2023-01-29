@@ -66,7 +66,7 @@ def rotate(env):
     for i in range(0, env.flipMouseMove, round(env.flipMouseMove/5)):
       # Moving the mouse a 5th of the total move amount
       pydirectinput.move(round(env.flipMouseMove/5)
-                         * (env.flip), 0, relative=True)
+        * (env.flip), 0, relative=True)
       # Wait for .3 seconds
       time.sleep(.3)
     env.flip *= -1
