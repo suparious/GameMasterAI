@@ -140,6 +140,7 @@ def combatActivate(env):
       print("End of Combat")
       combat = False
       if env.takePots:
+        #TODO make a fucntion to replace this, add a cooldown timer
         pyautogui.press(env.hotbarKey1)
         time.sleep(.3)
   pyautogui.press(env.weaponSelect1)
