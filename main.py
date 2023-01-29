@@ -1,6 +1,7 @@
 import pyautogui
 import pydirectinput
 import time
+import mss
 import gc
 import threading
 from dataclasses import dataclass
@@ -46,11 +47,12 @@ class RunEnv():
   hotbarKey1 = config.hotbarKey1
   takePots = config.takePots
   emote_list = config.emote_list
+  sct = mss.mss()
+  startTime = time.time()
   bagCheckDelay = 0
   sctGrab = ""
   stopped = True
   currentFoward = 0
-  startTime = time.time()
   sctImg = ""
   sctPNG = ""
   stuckTracker = 0

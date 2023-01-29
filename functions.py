@@ -4,7 +4,6 @@ def screenshot(env, region, name, file):
   from PIL import Image
   import numpy as np
 
-  sct = mss.mss()
   print("capturing screen:", region)
   env.sctImg = Image.fromarray(np.array(sct.grab(region)))
   env.sctGrab = env.sct.grab(region)
