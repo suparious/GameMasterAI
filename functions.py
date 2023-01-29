@@ -4,7 +4,7 @@ def screenshot(env, region, name, file):
   from PIL import Image
   import numpy as np
 
-  print("capturing screen:", region)
+  #print("capturing screen:", region)
   env.sctImg = Image.fromarray(np.array(env.sct.grab(region)))
   env.sctGrab = env.sct.grab(region)
   env.sctPNG = mss.tools.to_png(env.sctGrab.rgb, env.sctGrab.size)
@@ -71,6 +71,7 @@ def checkHealth(env):
   import pyautogui
   pyautogui.FAILSAFE = env.failsafe
   from functions import screenshot
+  from functions import combatActivate
 
   screenshot(env, env.mssRegion, "checkHealth", False)
 
@@ -206,7 +207,7 @@ def checkInventory(env):
     n_white_pix = np.sum(count_pixels == 255)
     n_black_pix = np.sum(count_pixels == 0)
     total_pix = n_white_pix + n_black_pix
-    bagWeight = round(n_white_pix / total_pix * 100)
+    env.bagWeight = round(n_white_pix / total_pix * 100)
     print('Inventory load:', env.bagWeight, '%')
     env.bagCheckDelay = 0
   env.bagCheckDelay += 1
@@ -216,6 +217,7 @@ def closeMenu(env):
   import pydirectinput
   pyautogui.FAILSAFE = env.failsafe
   pydirectinput.FAILSAFE = env.failsafe
+  from functions import screenshot
   
   screenshot(env, env.mssRegion, "closeMenu", False)
   if pyautogui.locate("imgs/modes0.png", env.sctImg, grayscale=True, confidence=.8) is not None:
@@ -254,9 +256,9 @@ def checkForResource(env):
     if not env.stopped:
       pydirectinput.press(env.autorunKey)
     print("Stopping. Distance:", round(env.currentFoward), "m, Weight:", env.bagWeight,"%")
-    pydirectinput.keyDown(env.reverseMoveKey)
-    time.sleep(.1)
-    pydirectinput.keyUp(env.reverseMoveKey)
+    #pydirectinput.keyDown(env.reverseMoveKey)
+    #time.sleep(.1)
+    #pydirectinput.keyUp(env.reverseMoveKey)
     env.stopped = True
     env.found = True
     env.fucked = 0
@@ -264,24 +266,21 @@ def checkForResource(env):
     env.currentFoward = 0
   else:
     env.found = False
-
   while env.found:
-    
     # Interact with detected object
+    #print("Pressing Action Key")
     pyautogui.press(env.actionKey)
     time.sleep(0.1)
-    print("Pressing Action Key")
-    checkHealth(env)
     # Get a new Screenshot
     screenshot(env, env.mssRegion, "checkForResource", False)
     # Check the status of the interaction
-    if pyautogui.locate("imgs/two1.png", env.sctImg, grayscale=True, confidence=.8) is None:
+    if pyautogui.locate("imgs/two1.png", env.sctImg, grayscale=True, confidence=.7) is None:
       print("Waiting for object")
       waiting = True
       while waiting:       
         time.sleep(0.5)
         screenshot(env, env.mssRegion, "checkForResource", False)
-        if pyautogui.locate("imgs/two1.png", env.sctImg, grayscale=True, confidence=.8) is None:
+        if pyautogui.locate("imgs/two1.png", env.sctImg, grayscale=True, confidence=.7) is None:
           waiting = True
         else:
           waiting = False

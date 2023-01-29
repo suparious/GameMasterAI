@@ -15,6 +15,7 @@ from functions import checkHealth
 from functions import checkInventory
 from functions import unstuck
 from functions import checkForResource
+from functions import closeMenu
 
 # quality of life settings for developers
 pyautogui.FAILSAFE = config.failsafe
@@ -52,6 +53,7 @@ class RunEnv():
   emote_list = config.emote_list
   fuckedMax = config.fuckedMax
   maxStuck = config.maxStuck
+  prone = config.prone
   sct = mss.mss()
   startTime = time.time()
   bagCheckDelay = 0
@@ -71,7 +73,7 @@ class RunEnv():
   shotType = "debug"
   combat = False
   
-def capture_setup(env):
+def startup(env):
   print("RibRub Bot v", config.version)
   # Iterate through available windows, until we find the gameTitle
   for window in env.gameWindows:
@@ -117,41 +119,57 @@ def capture(env):
   # begin capture loop
   while env.bagWeight < 90:
     env.currentFoward += (time.time() - env.startTime)
-    checkHealth(env)
-      #screenshot()
-      #checkCombat()
-        #combatActivate()
-          #combatFocus()
-          #takePots()
+    
     checkInventory(env)
+      #screenshot()
+      #closeMenu()
+        #screenshot()
+    
     unstuck(env)
+    
     rotate(env)
+      #screenshot()
+      #random_emote()
+    
     checkForResource(env)
       #screenshot()
+      #checkHealth()
+        #screenshot()
+        #combatActivate()
+          #combatFocus()
+          #checkHealth()
+    
+    checkHealth(env)
+    
     autoRun(env)
-    time.sleep(0.4)
+
+    gc.collect()
 
 # Define main loop
-def main(env):
+def finish(env):
   env.startTime = time.time()  
-
   ### Main loop
-  print("Starting main loop")
-  time.sleep(10)
-
+  print("Possible bag full, stopping. Weight:", env.bagWeight,"%")
+  closeMenu()
+  pyautogui.press(env.weaponActivate)
+  time.sleep(.3)
+  if not stopped:
+    pydirectinput.press(env.autorunKey)
+    stopped = True
+  time.sleep(.3)
+  pyautogui.press(env.prone)
+  time.sleep(.3)
   # Clean garbage
   gc.collect()
   print("End of main loop")
 
-
-
 # Configure threading
 runenv = RunEnv()
 
-screen_setup = threading.Thread(name='capture_setup', target=capture_setup(runenv))
+startupThread = threading.Thread(name='startup', target=startup(runenv))
 captureLoop = threading.Thread(name='capture', target=capture(runenv))
-mainLoop = threading.Thread(name='main', target=main(runenv))
+finishThread = threading.Thread(name='finish', target=finish(runenv))
 
-screen_setup.run()
+startupThread.run()
 captureLoop.start()
-mainLoop.start()
+finishThread.start()
