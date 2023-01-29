@@ -20,23 +20,32 @@ weaponSelect2 = '2'
 weaponSelectDelay = 0.5
 # The keybinds for your active combat skills
 combatKey1 = 'q'
-combatKey1delay1 = 1
-combatKey1delay2 = 2
 combatKey2 = 'r'
-combatKey2delay1 = 1
-combatKey2delay2 = 1
 combatKey3 = 'f'
+# the cooldown times for keys on weapon 1
+combatKey1delay1 = 1
+combatKey2delay1 = 1
 combatKey3delay1 = 3
+# the cooldown times for keys on weapon 2
+combatKey1delay2 = 2
+combatKey2delay2 = 1
 combatKey3delay2 = 3
 # Use health potions during combat
-takePots = True
+takeHealthPots = True
 hotbarKey1 = '3'
+hotbarKey1delay = 70
 # Proficiency Pot Key
+takeProfPots = True
 hotbarKey2 = '4'
-# Food Buff Key
+hotbarKey2delay = 3600
+# Attribute Buff Key
+takeAttribFood = True
 hotbarKey3 = '5'
+hotbarKey3delay = 3600
 # Trade skill food
+takeTradeFood = True
 hotbarKey4 = '6'
+hotbarKey4delay = 3600
 # How many times we can get fucked until we try to teleport out
 fuckedMax = 5
 # Number of loops before checking the bag space
