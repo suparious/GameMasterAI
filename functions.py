@@ -263,7 +263,7 @@ def checkForResource(env):
     # If not stopped, stop
     if not env.stopped:
       pydirectinput.press(env.autorunKey)
-    print("Stopping. Distance:", round(env.currentFoward), "m, Weight:", env.bagWeight,"%")
+    #print("Stopping. Distance:", round(env.currentFoward), "m, Weight:", env.bagWeight,"%")
     #pydirectinput.keyDown(env.reverseMoveKey)
     #time.sleep(.1)
     #pydirectinput.keyUp(env.reverseMoveKey)

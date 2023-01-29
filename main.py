@@ -56,6 +56,7 @@ class RunEnv():
   fuckedMax = config.fuckedMax
   maxStuck = config.maxStuck
   prone = config.prone
+  run_mode = config.default_run_mode
   sct = mss.mss()
   startTime = time.time()
   bagCheckDelay = 0
@@ -76,12 +77,14 @@ class RunEnv():
   combat = False
   
 def startup(env, argv):
-  print("RibRub Bot v", config.version)
   opts, argv = getopt.getopt(argv, "hm:",["mmode="])
   for opt, arg in opts:
     if opt == '-h':
       print("main.py -m <operation_mode>")
-      sys.exit() 
+      sys.exit()
+    elif opt in ("-m", "--mmode"):
+      env.run_mode = arg
+  print("RibRub Bot v", config.version, env.run_mode)
   #print ("Number of arguments", len(sys.argv), "arguments.")
   #print ("Argument List:", str(sys.argv))
   # Iterate through available windows, until we find the gameTitle
@@ -129,9 +132,15 @@ def capture(env):
   while env.bagWeight < 90:
     env.currentFoward += (time.time() - env.startTime)
     checkForResource(env)
-    checkHealth(env)
-    autoRun(env)
-    gc.collect()
+    if env.run_mode == "roomba":
+      checkHealth(env)
+      autoRun(env)
+    if env.gc_loops >= config.gc_max_loops:
+      env.gc_loops = 0
+      print("Collecting garbage")
+      gc.collect()
+    else:
+      env.gc_loops += 1
 
 # Define main loop
 def finish(env):

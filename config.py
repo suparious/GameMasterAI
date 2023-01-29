@@ -50,3 +50,5 @@ emote_list = ["thumbs", "rockpaperscissors", "dice", "cheer", "flex"]
 images_folder = "imgs"
 runtime_images_folder = "debug"
 failsafe = False
+default_run_mode = "roomba" # either roomba or hoover
+gc_max_loops = 100
