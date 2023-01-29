@@ -17,6 +17,7 @@ import config
 # bring in custom functions
 from functions import screenshot
 from functions import autoRun
+from functions import rotate
 
 # quality of life settings for developers
 pyautogui.FAILSAFE = False
@@ -31,6 +32,9 @@ class RunEnv():
   forwardMoveKey = config.forwardMoveKey
   autorunKey = config.autorunKey
   failsafe = config.failsafe
+  fowardMoveTotal = config.fowardMoveTotal
+  flipMouseMove = config.flipMouseMove
+  flip = config.flip
   stopped = True
   currentFoward = 0
   startTime = time.time()
@@ -97,6 +101,7 @@ def capture(env):
     env.currentFoward += (time.time() - env.startTime)
     screenshot(env, env.full_screen)
     autoRun(env)
+    rotate(env)
     time.sleep(0.4)
 
 # Define main loop
