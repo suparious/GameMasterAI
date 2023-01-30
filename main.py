@@ -164,7 +164,7 @@ def finish(env):
   env.startTime = time.time()  
   ### Main loop
   print("Possible bag full, stopping. Weight:", env.bagWeight,"%")
-  closeMenu()
+  closeMenu(env)
   pyautogui.press(env.weaponActivate)
   time.sleep(.3)
   if not stopped:
