@@ -1,4 +1,5 @@
 import sys
+import os
 import getopt
 import pyautogui
 import pydirectinput
@@ -88,6 +89,7 @@ class RunEnv():
   gc_loops = 0
   
 def startup(env, argv):
+  print("RibRub Bot v", config.version, env.run_mode)
   opts, argv = getopt.getopt(argv, "hm:",["mmode="])
   for opt, arg in opts:
     if opt == '-h':
@@ -95,7 +97,8 @@ def startup(env, argv):
       sys.exit()
     elif opt in ("-m", "--mmode"):
       env.run_mode = arg
-  print("RibRub Bot v", config.version, env.run_mode)
+  if not os.path.isdir(config.runtime_images_folder):
+    os.makedirs(config.runtime_images_folder)
   #print ("Number of arguments", len(sys.argv), "arguments.")
   #print ("Argument List:", str(sys.argv))
   # Iterate through available windows, until we find the gameTitle
