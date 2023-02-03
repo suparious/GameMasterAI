@@ -4,3 +4,4 @@ mss
 numpy
 Image
 opencv-python
+dataclasses
